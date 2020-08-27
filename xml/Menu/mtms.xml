@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<menu>
+  <item>
+    <path>civicrm/mtms/donation</path>
+    <page_callback>CRM_Mtms_Page_Donation</page_callback>
+    <title>mtms Donation</title>
+    <access_callback>1</access_callback>
+    <is_public>true</is_public>
+  </item>
+</menu>
