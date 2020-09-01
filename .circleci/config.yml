@@ -22,6 +22,21 @@ commands:
             civiver=$(curl -s 'https://latest.civicrm.org/stable.php')
           fi
           su - buildkit -c "/buildkit/bin/civibuild create << parameters.build_name >> --civi-ver $civiver --type << parameters.type >> --url << parameters.url >>"
+  install_dependencies:
+    description: "Install Dependencies"
+    parameters:
+      build_name:
+        type: string
+        default: master
+    steps:
+      - run: |
+          EXT_DIR=/buildkit/build/<< parameters.build_name >>/web/sites/default/files/civicrm/ext
+          cd $EXT_DIR
+          git clone https://github.com/Project60/org.project60.banking.git banking-src
+          mv banking-src/extension org.project60.banking
+          rm -rf banking-src
+          chown buildkit:buildkit org.project60.banking -R
+          su - buildkit -c "cd /buildkit/build/<< parameters.build_name >>/web && cv en org.project60.banking"
   install_extension:
     description: "Install Extension"
     parameters:
@@ -75,6 +90,8 @@ commands:
           type: << parameters.type >>
           version: << parameters.version >>
           url: << parameters.url >>
+      - install_dependencies:
+          build_name: << parameters.build_name >>
       - install_extension:
           build_name: << parameters.build_name >>
       - run_civilint:
