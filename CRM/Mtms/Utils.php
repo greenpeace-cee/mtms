@@ -92,6 +92,7 @@ class CRM_Mtms_Utils {
         ->addValue('option_group_id', $optionGroup['id'])
         ->addValue('name', $operator)
         ->addValue('label', $operator)
+        ->addValue('is_active', TRUE)
         ->setCheckPermissions(FALSE)
         ->execute()
         ->first();
